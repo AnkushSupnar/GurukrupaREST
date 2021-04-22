@@ -41,8 +41,8 @@ public class ItemController {
 			return new ResponseEntity<Item>(HttpStatus.NOT_FOUND);
 		}
 	}
-	@GetMapping(value="/items/byname/{itemName}",produces=MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<Item>getByName(@PathVariable("itemName") String name)
+	@GetMapping(value="/items/byname/{itemname}",produces=MediaType.APPLICATION_JSON_VALUE)
+	private ResponseEntity<Item>getByName(@PathVariable("itemname") String name)
 	{
 		Item item = repository.getItemByName(name);
 		if(item!=null)
@@ -55,14 +55,10 @@ public class ItemController {
 	{
 		return new ResponseEntity<List<String>>(repository.getAllItemNames(),HttpStatus.OK);
 	}
-	@PostMapping(value="/items/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_HTML_VALUE)
+	@PostMapping(value="/items/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
 	private ResponseEntity<Item>saveItem(@RequestBody Item item)
 	{
-		Item i = repository.save(item);
-		if(i!=null)
-		return new ResponseEntity<Item>(i,HttpStatus.CREATED);
-		else
-			return new ResponseEntity<Item>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Item>(repository.save(item),HttpStatus.OK);
 		
 	}
 	@PutMapping(value="/items/update",consumes = MediaType.APPLICATION_JSON_VALUE,produces =MediaType.APPLICATION_JSON_VALUE )

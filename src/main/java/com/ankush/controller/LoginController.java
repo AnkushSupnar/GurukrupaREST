@@ -25,6 +25,11 @@ public class LoginController {
 	@Autowired
 	private LoginRepository repository;
 
+	@GetMapping
+	private ResponseEntity<String>checkConnection()
+	{
+		return new ResponseEntity<String>("Connected",HttpStatus.OK);
+	}
 	@GetMapping(value = "/logins", produces = MediaType.APPLICATION_JSON_VALUE)
 	private ResponseEntity<List<Login>> getAllLogin() {
 		return new ResponseEntity<List<Login>>(repository.findAll(), HttpStatus.OK);
