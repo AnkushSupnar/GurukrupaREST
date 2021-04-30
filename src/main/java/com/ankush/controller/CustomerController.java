@@ -62,6 +62,14 @@ public class CustomerController {
 	{
 		return new ResponseEntity<Customer>(repository.findByFullName(fname, fname, fname),HttpStatus.OK);
 	}
+	@GetMapping(value="/customers/byname/{fname}",produces = MediaType.APPLICATION_JSON_VALUE)
+	private ResponseEntity<Customer>findByName(@PathVariable("fname") String fname)
+	{
+		System.out.println("Got in REST="+fname);
+		String name[] = fname.split(" ");
+		return new ResponseEntity<Customer>(repository.findByFullName(name[0], name[1], name[2]),HttpStatus.OK);
+	}
+	
 	@PostMapping(value="/customers/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
 	private ResponseEntity<Customer>saveCustomer(@RequestBody Customer customer)
 	{

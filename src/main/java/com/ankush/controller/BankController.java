@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +23,8 @@ public class BankController {
 	@Autowired
 	private BankRepository repository;
 
-	@GetMapping
-	private ResponseEntity<String> checkConnection() {
-		return new ResponseEntity<String>("Connected", HttpStatus.OK);
-	}
-
 	@GetMapping(value="/banks/byid/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<Bank> getBankById(@RequestBody int id) {
+	private ResponseEntity<Bank> getBankById(@PathVariable("id") int id) {
 		Bank bank = repository.findById(id).orElse(null);
 		if (bank != null)
 			return new ResponseEntity<Bank>(bank, HttpStatus.OK);
@@ -46,19 +42,19 @@ public class BankController {
 		return new ResponseEntity<List<String>>(repository.getAllBankNames(),HttpStatus.OK);
 	}
 	@GetMapping(value="/banks/getbalance/{id}")
-	private ResponseEntity<Double>getBankBalance(@RequestBody int id)
+	private ResponseEntity<Double>getBankBalance(@PathVariable("id") int id)
 	{
 		return new ResponseEntity<Double>(repository.getBankBalance(id),HttpStatus.OK);
 	}
 	@PutMapping(value="/banks/addbalance/{id}/{balance}")
-	private ResponseEntity<Integer>addBankBalance(@RequestBody int id,@RequestBody double balance)
+	private ResponseEntity<Integer>addBankBalance(@PathVariable("id") int id,@PathVariable("balance") double balance)
 	{
 		return new ResponseEntity<Integer>(repository.addBankBalance(id, balance),HttpStatus.OK);
 	}
 	@PutMapping(value="/banks/reducebalance/{id}/{balance}")
-	private ResponseEntity<Integer>reduceBankBalance(@RequestBody int id,@RequestBody double balance)
+	private ResponseEntity<Integer>reduceBankBalance(@PathVariable("id") int id,@PathVariable("balance") double balance)
 	{
-		return new ResponseEntity<Integer>(repository.resuceBankBalance(id, balance),HttpStatus.OK);
+		return new ResponseEntity<Integer>(repository.reduceBankBalance(id, balance),HttpStatus.OK);
 	}
 	@PostMapping(value="/banks/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
 	private ResponseEntity<Bank>saveBank(@RequestBody Bank bank)
